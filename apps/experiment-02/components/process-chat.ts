@@ -17,28 +17,23 @@ type TextUIPart = Extract<UiMessagePart, { type: "text" }>;
 type ReasoningUIPart = Extract<UiMessagePart, { type: "reasoning" }>;
 type ToolInvocationUIPart = Extract<UiMessagePart, { type: "tool-invocation" }>;
 
-export async function fullStreamToUIMessages<
+export async function* fullStreamToUIMessages<
   TOOLS extends ToolSet,
   T extends TextStreamPart<TOOLS>,
 >({
   fullStream,
-  update,
+  messages,
   onToolCall,
   generateId,
   getCurrentDate = () => new Date(),
-  lastMessage,
 }: {
   fullStream: AsyncIterable<T>;
-  update: (options: {
-    message: UIMessage;
-    data: JSONValue[] | undefined;
-    replaceLastMessage: boolean;
-  }) => void;
+  messages: UIMessage[];
   onToolCall?: UseChatOptions["onToolCall"];
   generateId: () => string;
   getCurrentDate?: () => Date;
-  lastMessage: UIMessage | undefined;
 }) {
+  const lastMessage = messages[messages.length - 1];
   const replaceLastMessage = lastMessage?.role === "assistant";
   let step = replaceLastMessage
     ? 1 +
@@ -57,6 +52,13 @@ export async function fullStreamToUIMessages<
         content: "",
         parts: [],
       };
+
+  let currentMessages = [...messages];
+  if (!replaceLastMessage) {
+    currentMessages.push(message);
+  } else {
+    currentMessages[currentMessages.length - 1] = message;
+  }
 
   let currentTextPart: TextUIPart | undefined = undefined;
   let currentReasoningPart: ReasoningUIPart | undefined = undefined;
@@ -104,9 +106,6 @@ export async function fullStreamToUIMessages<
   };
 
   function execUpdate() {
-    // make a copy of the data array to ensure UI is updated (SWR)
-    const copiedData = [...data];
-
     // keeps the currentMessage up to date with the latest annotations,
     // even if annotations preceded the message creation
     if (messageAnnotations?.length) {
@@ -115,21 +114,15 @@ export async function fullStreamToUIMessages<
 
     const copiedMessage = {
       // deep copy the message to ensure that deep changes (msg attachments) are updated
-      // with SolidJS. SolidJS uses referential integration of sub-objects to detect changes.
       ...structuredClone(message),
-      // add a revision id to ensure that the message is updated with SWR. SWR uses a
-      // hashing approach by default to detect changes, but it only works for shallow
-      // changes. This is why we need to add a revision id to ensure that the message
-      // is updated with SWR (without it, the changes get stuck in SWR and are not
-      // forwarded to rendering):
+      // add a revision id to ensure that the message is updated
       revisionId: generateId(),
     } as UIMessage;
 
-    update({
-      message: copiedMessage,
-      data: copiedData,
-      replaceLastMessage,
-    });
+    // Update the current messages array
+    currentMessages[currentMessages.length - 1] = copiedMessage;
+    
+    return [...currentMessages];
   }
   // implementation note: this slightly more complex algorithm is required
   // to pass the tests in the edge environment.
@@ -146,11 +139,11 @@ export async function fullStreamToUIMessages<
           };
           message.parts.push(currentTextPart);
         } else {
-          currentTextPart.text += value;
+          currentTextPart.text += value.textDelta;
         }
 
-        message.content += value;
-        execUpdate();
+        message.content += value.textDelta;
+        yield execUpdate();
         break;
       }
       case "reasoning": {
@@ -174,9 +167,9 @@ export async function fullStreamToUIMessages<
           currentReasoningPart.reasoning += value;
         }
 
-        message.reasoning = (message.reasoning ?? "") + value;
+        message.reasoning = (message.reasoning ?? "") + value.textDelta;
 
-        execUpdate();
+        yield execUpdate();
         break;
       }
       case "reasoning-signature": {
@@ -202,7 +195,7 @@ export async function fullStreamToUIMessages<
 
         currentReasoningTextDetail = undefined;
 
-        execUpdate();
+        yield execUpdate();
         break;
       }
       case "file": {
@@ -212,7 +205,7 @@ export async function fullStreamToUIMessages<
           data: value.base64,
         });
 
-        execUpdate();
+        yield execUpdate();
         break;
       }
       case "source": {
@@ -221,7 +214,7 @@ export async function fullStreamToUIMessages<
           source: value.source,
         });
 
-        execUpdate();
+        yield execUpdate();
         break;
       }
       // case "data": {
@@ -269,7 +262,7 @@ export async function fullStreamToUIMessages<
 
         updateToolInvocationPart(value.toolCallId, invocation);
 
-        execUpdate();
+        yield execUpdate();
         break;
       }
       case "tool-call-delta": {
@@ -294,7 +287,7 @@ export async function fullStreamToUIMessages<
 
         updateToolInvocationPart(value.toolCallId, invocationDelta);
 
-        execUpdate();
+        yield execUpdate();
         break;
       }
       case "tool-call": {
@@ -318,7 +311,7 @@ export async function fullStreamToUIMessages<
 
         updateToolInvocationPart(value.toolCallId, invocationCall);
 
-        execUpdate();
+        yield execUpdate();
 
         // invoke the onToolCall callback if it exists. This is blocking.
         // In the future we should make this non-blocking, which
@@ -339,7 +332,7 @@ export async function fullStreamToUIMessages<
 
             updateToolInvocationPart(value.toolCallId, invocationResult);
 
-            execUpdate();
+            yield execUpdate();
           }
         }
         break;
@@ -373,7 +366,7 @@ export async function fullStreamToUIMessages<
 
         updateToolInvocationPart(value.toolCallId, invocationWithResult);
 
-        execUpdate();
+        yield execUpdate();
         break;
       }
       case "finish": {
@@ -400,7 +393,7 @@ export async function fullStreamToUIMessages<
 
         // add a step boundary part to the message
         message.parts.push({ type: "step-start" });
-        execUpdate();
+        yield execUpdate();
         break;
       }
       default: {

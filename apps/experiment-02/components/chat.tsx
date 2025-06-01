@@ -1,3 +1,4 @@
+"use client";
 import { ChatMessage } from "@/components/chat-message";
 import { SettingsPanelTrigger } from "@/components/settings-panel";
 import {
@@ -21,10 +22,11 @@ import {
 } from "@remixicon/react";
 import { ScrollToEndOnLoad } from "./scroll-to-end";
 import { Message, useChat } from "ai/react";
+import { useState } from "react";
+import { UIMessage } from "ai";
 
-export default async function Chat() {
-
-
+export default function Chat({ initialMessages = [] as UIMessage[] }) {
+  const [messages, setMessages] = useState(initialMessages);
   return (
     <ScrollArea className="grow [&>div>div]:h-full flex-1 h-full flex flex-col w-full shadow-md md:rounded-s-[inherit] min-[1024px]:rounded-e-3xl bg-background">
       <div className="flex-1 flex flex-col h-full  px-4 md:px-5 ">
@@ -84,22 +86,15 @@ export default async function Chat() {
                 Today
               </div>
             </div>
-            <ChatMessage isUser>
-              <p>Hey Bolt, can you tell me more about AI Agents?</p>
-            </ChatMessage>
-            <ChatMessage>
-              <p>
-                AI agents are software that perceive their environment and act
-                autonomously to achieve goals, making decisions, learning, and
-                interacting. For example, an AI agent might schedule meetings by
-                resolving conflicts, contacting participants, and finding
-                optimal times—all without constant supervision.
-              </p>
-              <p>Let me know if you&lsquo;d like more details!</p>
-            </ChatMessage>
-            <ChatMessage isUser>
-              <p>All clear, thank you!</p>
-            </ChatMessage>
+            {messages.map((x) => {
+              let isUser = x.role === "user";
+
+              return (
+                <ChatMessage isUser={isUser}>
+                  {x}
+                </ChatMessage>
+              );
+            })}
             <ScrollToEndOnLoad />
           </div>
         </div>

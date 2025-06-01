@@ -1,15 +1,28 @@
 "use server";
-
+import fs from "fs";
 import { openai } from "@ai-sdk/openai";
-import { streamText, tool, type CoreMessage } from "ai";
+import {
+  appendResponseMessages,
+  Message,
+  streamText,
+  tool,
+  type CoreMessage,
+} from "ai";
 import { z } from "zod";
 import { Evt } from "evt";
+import path from "path";
+const CHAT_FILE = "chat-messages.json";
 
-export async function generateMessage({
-  messages,
-}: {
-  messages: CoreMessage[];
-}) {
+function saveChat(messages: Message[]): void {
+  try {
+    const filePath = path.join(process.cwd(), CHAT_FILE);
+    fs.writeFileSync(filePath, JSON.stringify(messages, null, 2), "utf-8");
+  } catch (error) {
+    console.error("Error writing chat file:", error);
+  }
+}
+
+export async function generateMessage({ messages }: { messages: Message[] }) {
   console.log(`generation`);
 
   // Check for API key
@@ -20,6 +33,14 @@ export async function generateMessage({
     const result = streamText({
       model: openai("gpt-4o-mini"),
       messages,
+      async onFinish({ response }) {
+        await saveChat(
+          appendResponseMessages({
+            messages,
+            responseMessages: response.messages,
+          }),
+        );
+      },
       tools: {
         some: tool({
           description: "A sample tool",
@@ -33,10 +54,8 @@ export async function generateMessage({
       },
     });
 
-    result.toDataStreamResponse();
-
-    for await (const textPart of result.fullStream) {
-      yield textPart;
+    for await (const part of result.fullStream) {
+      yield part;
     }
   }
   return generator();

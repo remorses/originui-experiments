@@ -44,7 +44,7 @@ export function ChatMessage({ isUser, children }: ChatMessageProps) {
       <div
         className={cn(isUser ? "bg-muted px-4 py-3 rounded-xl" : "space-y-4")}
       >
-        <div className="flex flex-col gap-3">
+        <div className="flex prose flex-col gap-3">
           <p className="sr-only">{isUser ? "You" : "Bart"} said:</p>
           {children}
         </div>
