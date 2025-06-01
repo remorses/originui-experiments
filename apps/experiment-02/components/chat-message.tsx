@@ -25,20 +25,22 @@ export function ChatMessage({ isUser, children }: ChatMessageProps) {
         isUser && "justify-end",
       )}
     >
-      <img
-        className={cn(
-          "rounded-full",
-          isUser ? "order-1" : "border border-black/[0.08] shadow-sm",
-        )}
-        src={
-          isUser
-            ? "https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/exp2/user-02_mlqqqt.png"
-            : "https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/exp2/user-01_i5l7tp.png"
-        }
-        alt={isUser ? "User profile" : "Bart logo"}
-        width={40}
-        height={40}
-      />
+      {false && (
+        <img
+          className={cn(
+            "rounded-full",
+            isUser ? "order-1" : "border border-black/[0.08] shadow-sm",
+          )}
+          src={
+            isUser
+              ? "https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/exp2/user-02_mlqqqt.png"
+              : "https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/exp2/user-01_i5l7tp.png"
+          }
+          alt={isUser ? "User profile" : "Bart logo"}
+          width={40}
+          height={40}
+        />
+      )}
       <div
         className={cn(isUser ? "bg-muted px-4 py-3 rounded-xl" : "space-y-4")}
       >
