@@ -1,5 +1,3 @@
-
-
 import { ChatMessage } from "@/components/chat-message";
 import { SettingsPanelTrigger } from "@/components/settings-panel";
 import {
@@ -22,8 +20,11 @@ import {
   RiShining2Line,
 } from "@remixicon/react";
 import { ScrollToEndOnLoad } from "./scroll-to-end";
+import { Message, useChat } from "ai/react";
 
-export default function Chat() {
+export default async function Chat() {
+
+
   return (
     <ScrollArea className="grow [&>div>div]:h-full flex-1 h-full flex flex-col w-full shadow-md md:rounded-s-[inherit] min-[1024px]:rounded-e-3xl bg-background">
       <div className="flex-1 flex flex-col h-full  px-4 md:px-5 ">
