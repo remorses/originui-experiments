@@ -20,7 +20,7 @@ type ToolInvocationUIPart = Extract<UiMessagePart, { type: "tool-invocation" }>;
 
 export async function* fullStreamToUIMessages<
   TOOLS extends ToolSet,
-  T extends TextStreamPart<TOOLS>,
+
 >({
   fullStream,
   messages,
@@ -28,7 +28,7 @@ export async function* fullStreamToUIMessages<
   generateId,
   getCurrentDate = () => new Date(),
 }: {
-  fullStream: AsyncIterable<T>;
+  fullStream: AsyncIterable<TextStreamPart<TOOLS>>;
   messages: UIMessage[];
   onToolCall?: UseChatOptions["onToolCall"];
   generateId: () => string;
@@ -130,6 +130,7 @@ export async function* fullStreamToUIMessages<
 
   let finishReason: FinishReason;
   for await (const value of fullStream) {
+    console.log(value)
     const type = value.type;
     switch (type) {
       case "text-delta": {

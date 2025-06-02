@@ -41,21 +41,27 @@ export async function generateMessage({ messages }: { messages: Message[] }) {
           }),
         );
       },
-      tools: {
-        some: tool({
-          description: "A sample tool",
-          parameters: z.object({ hello: z.string() }),
+      // tools: {
+      //   some: tool({
+      //     description: "A sample tool",
+      //     parameters: z.object({ hello: z.string() }),
 
-          execute: async (args, {}) => {
-            args.hello;
-            return "Tool executed";
-          },
-        }),
-      },
+      //     execute: async (args, {}) => {
+      //       args.hello;
+      //       return "Tool executed";
+      //     },
+      //   }),
+      // },
     });
 
-
     for await (const part of result.fullStream) {
+      if ("request" in part) {
+        delete (part as any)["request"];
+      }
+      if ("response" in part) {
+        delete (part as any)["response"];
+      }
+      console.log(part);
       yield part;
     }
   }

@@ -92,5 +92,286 @@
         }
       }
     ]
+  },
+  {
+    "id": "1748876544274",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "hi\n"
+      }
+    ]
+  },
+  {
+    "id": "msg-N3IAraj3vUx5V49XGovGVBnY",
+    "createdAt": "2025-06-02T15:02:24.560Z",
+    "role": "assistant",
+    "content": "",
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "type": "tool-result",
+          "toolCallId": "call_Vc4j4km8koqrkOI7ccQ2q18R",
+          "toolName": "some",
+          "args": {
+            "hello": "Hello again! How can I help you?"
+          },
+          "result": "Tool executed"
+        }
+      }
+    ],
+    "toolInvocations": [
+      {
+        "state": "result",
+        "step": 0,
+        "type": "tool-result",
+        "toolCallId": "call_Vc4j4km8koqrkOI7ccQ2q18R",
+        "toolName": "some",
+        "args": {
+          "hello": "Hello again! How can I help you?"
+        },
+        "result": "Tool executed"
+      }
+    ],
+    "revisionId": "fqW4WyHXf2TiTy1E"
+  },
+  {
+    "id": "1748876573955",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "test"
+      }
+    ]
+  },
+  {
+    "id": "msg-9vTaGZemWuLn4EZbSvJbtXIy",
+    "createdAt": "2025-06-02T15:02:54.309Z",
+    "role": "assistant",
+    "content": "",
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "type": "tool-result",
+          "toolCallId": "call_Wj6Y9Bh9bxvYTxNfEnWf9Dk3",
+          "toolName": "some",
+          "args": {
+            "hello": "Test received! How can I assist you further?"
+          },
+          "result": "Tool executed"
+        }
+      }
+    ],
+    "toolInvocations": [
+      {
+        "state": "result",
+        "step": 0,
+        "type": "tool-result",
+        "toolCallId": "call_Wj6Y9Bh9bxvYTxNfEnWf9Dk3",
+        "toolName": "some",
+        "args": {
+          "hello": "Test received! How can I assist you further?"
+        },
+        "result": "Tool executed"
+      }
+    ],
+    "revisionId": "z3Lvz9zGLZDtkh5R"
+  },
+  {
+    "id": "1748876593893",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "say hi\n"
+      }
+    ]
+  },
+  {
+    "id": "msg-NFWCEqp8yHkbmwFdyllWh9vf",
+    "createdAt": "2025-06-02T15:03:14.005Z",
+    "role": "assistant",
+    "content": "",
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "type": "tool-result",
+          "toolCallId": "call_zkmj1FXk0Z3bk0dF7CERclnv",
+          "toolName": "some",
+          "args": {
+            "hello": "Hi!"
+          },
+          "result": "Tool executed"
+        }
+      }
+    ],
+    "toolInvocations": [
+      {
+        "state": "result",
+        "step": 0,
+        "type": "tool-result",
+        "toolCallId": "call_zkmj1FXk0Z3bk0dF7CERclnv",
+        "toolName": "some",
+        "args": {
+          "hello": "Hi!"
+        },
+        "result": "Tool executed"
+      }
+    ],
+    "revisionId": "NpmLBMDPmPqGS76v"
+  },
+  {
+    "id": "1748876628442",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "xxx"
+      }
+    ]
+  },
+  {
+    "id": "msg-V9Wivtz0QZOFoVzWLt5gxNGf",
+    "createdAt": "2025-06-02T15:03:48.554Z",
+    "role": "assistant",
+    "content": "",
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "type": "tool-result",
+          "toolCallId": "call_XEoq7LdEAXHfeTL6ckzV2His",
+          "toolName": "some",
+          "args": {
+            "hello": "It seems like you entered 'xxx'. How can I assist you further?"
+          },
+          "result": "Tool executed"
+        }
+      }
+    ],
+    "toolInvocations": [
+      {
+        "state": "result",
+        "step": 0,
+        "type": "tool-result",
+        "toolCallId": "call_XEoq7LdEAXHfeTL6ckzV2His",
+        "toolName": "some",
+        "args": {
+          "hello": "It seems like you entered 'xxx'. How can I assist you further?"
+        },
+        "result": "Tool executed"
+      }
+    ],
+    "revisionId": "X7AJxZki2kaRwh8R"
+  },
+  {
+    "id": "1748876665955",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "hi"
+      }
+    ]
+  },
+  {
+    "id": "msg-y9dR6keM87x4uaTpHNOSf9Yb",
+    "createdAt": "2025-06-02T15:04:26.089Z",
+    "role": "assistant",
+    "content": "Hello! How can I assist you today?",
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "text",
+        "text": "Hello! How can I assist you today?"
+      }
+    ],
+    "revisionId": "uOrWmCFI8QKvFLNI"
+  },
+  {
+    "id": "1748876678119",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "can you be fun\n"
+      }
+    ]
+  },
+  {
+    "id": "msg-w2azHQy58c9J8wdls2eDLdjG",
+    "createdAt": "2025-06-02T15:04:38.259Z",
+    "role": "assistant",
+    "content": "Absolutely! I can share jokes, fun facts, or even play a word game. What sounds fun to you?",
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "text",
+        "text": "Absolutely! I can share jokes, fun facts, or even play a word game. What sounds fun to you?"
+      }
+    ],
+    "revisionId": "qtYjTszCPAkQB4zT"
+  },
+  {
+    "id": "1748876691277",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "like how much fun?\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "id": "msg-OvEXUwEASNzHzw12KIU1mAML",
+    "createdAt": "2025-06-02T15:04:56.164Z",
+    "content": "I can bring the fun in a variety of ways! Here are a few options:\n\n1. **Jokes**: I can tell you some funny jokes or puns.\n2. **Trivia**: I can quiz you on fun trivia questions.\n3. **Riddles**: I can challenge you with some brain-teasing riddles.\n4. **Stories**: I can create a silly story or a fun scenario.\n5. **Games**: We can play a word association game or something similar.\n\nWhat are you in the mood for?",
+    "toolInvocations": [],
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "text",
+        "text": "I can bring the fun in a variety of ways! Here are a few options:\n\n1. **Jokes**: I can tell you some funny jokes or puns.\n2. **Trivia**: I can quiz you on fun trivia questions.\n3. **Riddles**: I can challenge you with some brain-teasing riddles.\n4. **Stories**: I can create a silly story or a fun scenario.\n5. **Games**: We can play a word association game or something similar.\n\nWhat are you in the mood for?"
+      }
+    ]
   }
 ]

@@ -24,9 +24,10 @@ import {
 import { ScrollToEndOnLoad } from "./scroll-to-end";
 import { Message, useChat } from "ai/react";
 import { useState, useTransition } from "react";
-import { UIMessage } from "ai";
-import {  chatStateContainer, useChatState } from "./state";
+import { createIdGenerator, UIMessage } from "ai";
+import { chatStateContainer, useChatState } from "./state";
 import { generateMessage } from "./actions";
+import { fullStreamToUIMessages } from "./process-chat";
 
 export default function Chat({}) {
   const messages = useChatState((x) => x?.messages);
@@ -96,6 +97,9 @@ export default function Chat({}) {
                 <ChatMessage isUser={isUser}>
                   {x.parts.map((part) => {
                     if (part.type === "text") {
+                      if (x.role === "user") {
+                        return part.text;
+                      }
                       return <Markdown>{part.text}</Markdown>;
                     }
                   })}
@@ -131,10 +135,16 @@ function Footer() {
 
       // Call generateMessage with current messages plus user message
       const allMessages = [...messages, userMessage];
-       chatStateContainer?.current?.setState({ messages: allMessages });
+      chatStateContainer?.current?.setState({ messages: allMessages });
       const generator = await generateMessage({ messages: allMessages });
-      for await (let part of generator) {
-        console.log(part);
+      const generateId = createIdGenerator();
+      for await (let newMessages of fullStreamToUIMessages({
+        fullStream: generator,
+        messages: allMessages,
+        generateId,
+      })) {
+        console.log(newMessages);
+        chatStateContainer?.current?.setState({ messages: newMessages });
       }
 
       // Clear the input
