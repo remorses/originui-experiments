@@ -34,12 +34,18 @@
     "clsx": "^2.1.1",
     "evt": "^2.5.9",
     "lucide-react": "0.487.0",
+    "marked": "^15.0.12",
     "next": "^15.2.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-markdown": "^10.1.0",
+    "remark-breaks": "^4.0.0",
+    "remark-gfm": "^4.0.1",
     "shadcn": "^2.4.0",
+    "shiki": "^3.4.2",
     "tailwind-merge": "^3.2.0",
-    "zod": "^3.24.2"
+    "zod": "^3.24.2",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.1",

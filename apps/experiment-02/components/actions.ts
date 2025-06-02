@@ -54,6 +54,7 @@ export async function generateMessage({ messages }: { messages: Message[] }) {
       },
     });
 
+
     for await (const part of result.fullStream) {
       yield part;
     }
