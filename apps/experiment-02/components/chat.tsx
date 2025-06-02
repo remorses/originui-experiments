@@ -37,7 +37,7 @@ export default function Chat({}) {
   return (
     <ScrollArea
       ref={scrollRef}
-      className=" [&>div>div]:h-full flex-1 h-[800px] flex flex-col w-full shadow-md md:rounded-s-[inherit] min-[1024px]:rounded-e-3xl bg-background"
+      className=" [&>div>div]:h-full flex-1 h-full flex flex-col w-full shadow-md md:rounded-s-[inherit] min-[1024px]:rounded-e-3xl bg-background"
     >
       <div className="flex-1 flex flex-col h-full  px-4 md:px-5 ">
         {/* Header */}

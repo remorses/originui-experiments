@@ -601,5 +601,32 @@
         "text": "Sure! Here’s a longer poem for you:\n\n**The Journey of Seasons**\n\nIn the cradle of the year, where time flows like a stream,  \nSpring awakens softly, weaving life into a dream.  \nWith blossoms bursting, colors bright, the world begins to sing,  \nA symphony of life unfolds, as nature greets the spring.\n\nThe sun ascends, a golden orb, casting warmth upon the land,  \nAs gentle breezes stir the trees, and flowers take their stand.  \nThe bees are buzzing, busy now, collecting nectar sweet,  \nIn every corner, life abounds, in every heart, a beat.\n\nThen summer comes, with vibrant days, where laughter fills the air,  \nThe sunlit fields, the azure skies, a canvas bright and fair.  \nChildren play in golden light, their joy a pure delight,  \nAs evenings stretch and fireflies dance, beneath the stars so bright.\n\nBut soon the leaves begin to turn, as autumn takes its place,  \nWith hues of amber, gold, and rust, a warm and soft embrace.  \nThe harvest moon hangs low and full, a beacon in the night,  \nAs families gather, sharing tales, in the glow of firelight.\n\nAnd winter whispers, crisp and clear, with blankets soft and white,  \nThe world transformed, a silent peace, beneath the stars so bright.  \nIn cozy nooks, we find our warmth, with stories shared and told,  \nAs snowflakes fall like whispered dreams, a wonder to behold.\n\nThrough every season, life unfolds, a cycle ever true,  \nIn every change, a lesson learned, in every shade, a hue.  \nFor time is but a fleeting gift, a journey we all share,  \nIn the dance of seasons, we find love, in the moments that we care.\n\nSo let us cherish every phase, the laughter and the tears,  \nFor in the tapestry of life, we weave our hopes and fears.  \nWith open hearts, we’ll walk this path, through sunshine and through rain,  \nFor in the journey of the seasons, we find joy amidst the pain.\n\n---\n\nI hope you enjoyed this longer poem! If you have any specific themes or styles in mind for another one, feel free to let me know!"
       }
     ]
+  },
+  {
+    "id": "1748881224074",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "short one"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "id": "msg-wpCerqhZHj2OKRyzZlRXMhj9",
+    "createdAt": "2025-06-02T16:20:25.829Z",
+    "content": "Sure! Here’s a short poem for you:\n\n**Silent Night**\n\nStars above in velvet skies,  \nWhispers soft, the night complies.  \nDreams take flight on gentle wings,  \nIn the stillness, the heart sings.  \n\nI hope you like this one! If you’d like more, just let me know!",
+    "toolInvocations": [],
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "text",
+        "text": "Sure! Here’s a short poem for you:\n\n**Silent Night**\n\nStars above in velvet skies,  \nWhispers soft, the night complies.  \nDreams take flight on gentle wings,  \nIn the stillness, the heart sings.  \n\nI hope you like this one! If you’d like more, just let me know!"
+      }
+    ]
   }
 ]
