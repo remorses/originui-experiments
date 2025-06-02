@@ -11,48 +11,52 @@ import {
   RiLoopRightFill,
   RiCheckLine,
 } from "@remixicon/react";
+import { UIMessage } from "ai";
+import { memo } from "react";
+import { Markdown } from "./ui/markdown";
 
 type ChatMessageProps = {
-  isUser?: boolean;
-  children: React.ReactNode;
+  message: UIMessage;
+  children?: React.ReactNode;
 };
 
-export function ChatMessage({ isUser, children }: ChatMessageProps) {
+export const ChatMessage = memo(function ChatMessage({
+  message,
+  children,
+}: ChatMessageProps) {
+  console.log(`rendering message ${message.id}`)
   return (
     <article
       className={cn(
         "flex items-start gap-4 text-[15px] leading-relaxed",
-        isUser && "justify-end",
+        message.role === "user" && "justify-end",
       )}
     >
-      {false && (
-        <img
-          className={cn(
-            "rounded-full",
-            isUser ? "order-1" : "border border-black/[0.08] shadow-sm",
-          )}
-          src={
-            isUser
-              ? "https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/exp2/user-02_mlqqqt.png"
-              : "https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/exp2/user-01_i5l7tp.png"
-          }
-          alt={isUser ? "User profile" : "Bart logo"}
-          width={40}
-          height={40}
-        />
-      )}
       <div
-        className={cn(isUser ? "bg-muted px-4 py-3 rounded-xl" : "space-y-4")}
+        className={cn(
+          message.role === "user"
+            ? "bg-muted px-4 py-3 rounded-xl"
+            : "space-y-4",
+        )}
       >
         <div className=" prose ">
-          <p className="sr-only">{isUser ? "You" : "Bart"} said:</p>
-          {children}
+          <p className="sr-only">
+            {message.role === "user" ? "You" : "Bart"} said:
+          </p>
+          {message.parts.map((part, index) => {
+            if (part.type === "text") {
+              if (message.role === "user") {
+                return part.text;
+              }
+              return <Markdown key={index}>{part.text}</Markdown>;
+            }
+          })}
         </div>
-        {!isUser && <MessageActions />}
+        {message.role !== "user" && <MessageActions />}
       </div>
     </article>
   );
-}
+});
 
 type ActionButtonProps = {
   icon: React.ReactNode;

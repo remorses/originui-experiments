@@ -30,9 +30,8 @@ import { generateMessage } from "./actions";
 import { fullStreamToUIMessages } from "./process-chat";
 
 export default function Chat({}) {
-  const messages = useChatState((x) => x?.messages);
   return (
-    <ScrollArea className="grow [&>div>div]:h-full flex-1 h-full flex flex-col w-full shadow-md md:rounded-s-[inherit] min-[1024px]:rounded-e-3xl bg-background">
+    <ScrollArea className="grow  [&>div>div]:h-full flex-1 h-full flex flex-col w-full shadow-md md:rounded-s-[inherit] min-[1024px]:rounded-e-3xl bg-background">
       <div className="flex-1 flex flex-col h-full  px-4 md:px-5 ">
         {/* Header */}
         <div className="py-5 bg-background  sticky top-0 z-10 before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-gradient-to-r before:from-black/[0.06] before:via-black/10 before:to-black/[0.06]">
@@ -78,41 +77,35 @@ export default function Chat({}) {
           </div>
         </div>
         {/* Chat */}
-        <div className="relative flex h-full flex-col grow">
-          <div className="max-w-3xl  grow flex h-full flex-col mx-auto mt-6 space-y-6">
-            <div className="text-center my-8">
-              <div className="inline-flex items-center bg-white rounded-full border border-black/[0.08] shadow-xs text-xs font-medium py-1 px-3 text-foreground/80">
-                <RiShining2Line
-                  className="me-1.5 text-muted-foreground/70 -ms-1"
-                  size={14}
-                  aria-hidden="true"
-                />
-                Today
-              </div>
-            </div>
-            {messages.map((x) => {
-              let isUser = x.role === "user";
-
-              return (
-                <ChatMessage isUser={isUser}>
-                  {x.parts.map((part) => {
-                    if (part.type === "text") {
-                      if (x.role === "user") {
-                        return part.text;
-                      }
-                      return <Markdown>{part.text}</Markdown>;
-                    }
-                  })}
-                </ChatMessage>
-              );
-            })}
-            <ScrollToEndOnLoad />
-          </div>
-        </div>
-
+        <Messages />
         <Footer />
       </div>
     </ScrollArea>
+  );
+}
+
+function Messages() {
+  const messages = useChatState((x) => x?.messages);
+
+  return (
+    <div className="relative flex h-full flex-col grow">
+      <div className="max-w-3xl w-full grow flex h-full flex-col mx-auto mt-6 space-y-6">
+        <div className="text-center my-8">
+          <div className="inline-flex items-center bg-white rounded-full border border-black/[0.08] shadow-xs text-xs font-medium py-1 px-3 text-foreground/80">
+            <RiShining2Line
+              className="me-1.5 text-muted-foreground/70 -ms-1"
+              size={14}
+              aria-hidden="true"
+            />
+            Today
+          </div>
+        </div>
+        {messages.map((x) => {
+          return <ChatMessage key={x.id} message={x} />;
+        })}
+        <ScrollToEndOnLoad />
+      </div>
+    </div>
   );
 }
 
