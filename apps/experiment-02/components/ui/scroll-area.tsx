@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 function ScrollArea({
   className,
   children,
+  ref,
   ...props
 }: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {
   return (
@@ -17,6 +18,7 @@ function ScrollArea({
       {...props}
     >
       <ScrollAreaPrimitive.Viewport
+        ref={ref}
         data-slot="scroll-area-viewport"
         className="size-full rounded-[inherit]"
       >

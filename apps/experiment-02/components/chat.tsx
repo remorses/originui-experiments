@@ -29,9 +29,16 @@ import { chatStateContainer, useChatState } from "./state";
 import { generateMessage } from "./actions";
 import { fullStreamToUIMessages } from "./process-chat";
 
+import { useStickToBottom } from "use-stick-to-bottom";
+
 export default function Chat({}) {
+  const { scrollRef, contentRef, scrollToBottom } = useStickToBottom();
+
   return (
-    <ScrollArea className="grow  [&>div>div]:h-full flex-1 h-full flex flex-col w-full shadow-md md:rounded-s-[inherit] min-[1024px]:rounded-e-3xl bg-background">
+    <ScrollArea
+      ref={scrollRef}
+      className=" [&>div>div]:h-full flex-1 h-[800px] flex flex-col w-full shadow-md md:rounded-s-[inherit] min-[1024px]:rounded-e-3xl bg-background"
+    >
       <div className="flex-1 flex flex-col h-full  px-4 md:px-5 ">
         {/* Header */}
         <div className="py-5 bg-background  sticky top-0 z-10 before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-gradient-to-r before:from-black/[0.06] before:via-black/10 before:to-black/[0.06]">
@@ -77,18 +84,18 @@ export default function Chat({}) {
           </div>
         </div>
         {/* Chat */}
-        <Messages />
+        <Messages ref={contentRef} />
         <Footer />
       </div>
     </ScrollArea>
   );
 }
 
-function Messages() {
+function Messages({ ref }) {
   const messages = useChatState((x) => x?.messages);
 
   return (
-    <div className="relative flex h-full flex-col grow">
+    <div ref={ref} className="relative flex h-full flex-col grow">
       <div className="max-w-3xl w-full grow flex h-full flex-col mx-auto mt-6 space-y-6">
         <div className="text-center my-8">
           <div className="inline-flex items-center bg-white rounded-full border border-black/[0.08] shadow-xs text-xs font-medium py-1 px-3 text-foreground/80">
@@ -103,7 +110,6 @@ function Messages() {
         {messages.map((x) => {
           return <ChatMessage key={x.id} message={x} />;
         })}
-        <ScrollToEndOnLoad />
       </div>
     </div>
   );
@@ -131,7 +137,7 @@ function Footer() {
       chatStateContainer?.current?.setState({ messages: allMessages });
       const generator = await generateMessage({ messages: allMessages });
       const generateId = createIdGenerator();
-      for await (let newMessages of fullStreamToUIMessages({
+      for await (const newMessages of fullStreamToUIMessages({
         fullStream: generator,
         messages: allMessages,
         generateId,
