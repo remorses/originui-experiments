@@ -19,11 +19,12 @@ import Chat from "@/components/chat";
 
 import fs from "fs";
 import path from "path";
-import { Message } from "ai";
+import { Message, UIMessage } from "ai";
+import { StateProvider } from "@/components/state-provider";
 
 const CHAT_FILE = "chat-messages.json";
 
-function loadChat(): Message[] {
+function loadChat(): UIMessage[] {
   try {
     const filePath = path.join(process.cwd(), CHAT_FILE);
     const fileContent = fs.readFileSync(filePath, "utf-8");
@@ -73,10 +74,12 @@ export default async function Page() {
           </div>
         </header>
         <SettingsPanelProvider>
-          <div className="flex h-[calc(100svh-4rem)] bg-[hsl(240_5%_92.16%)] md:rounded-s-3xl md:group-peer-data-[state=collapsed]/sidebar-inset:rounded-s-none transition-all ease-in-out duration-300">
-            <Chat initialMessages={initialMessages} />
-            <SettingsPanel />
-          </div>
+          <StateProvider value={{ messages: initialMessages }}>
+            <div className="flex h-[calc(100svh-4rem)] bg-[hsl(240_5%_92.16%)] md:rounded-s-3xl md:group-peer-data-[state=collapsed]/sidebar-inset:rounded-s-none transition-all ease-in-out duration-300">
+              <Chat />
+              <SettingsPanel />
+            </div>
+          </StateProvider>
         </SettingsPanelProvider>
       </SidebarInset>
     </SidebarProvider>

@@ -27,8 +27,8 @@ import { useState } from "react";
 import { UIMessage } from "ai";
 import { useChatState } from "./state";
 
-export default function Chat({ initialMessages = [] as UIMessage[] }) {
-  const messages = useChatState((x) => x.messages);
+export default function Chat({  }) {
+  const messages = useChatState((x) => x?.messages);
   return (
     <ScrollArea className="grow [&>div>div]:h-full flex-1 h-full flex flex-col w-full shadow-md md:rounded-s-[inherit] min-[1024px]:rounded-e-3xl bg-background">
       <div className="flex-1 flex flex-col h-full  px-4 md:px-5 ">

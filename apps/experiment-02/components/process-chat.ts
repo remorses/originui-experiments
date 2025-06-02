@@ -405,14 +405,14 @@ export async function* fullStreamToUIMessages<
   }
 }
 
-export function convertToUIMessages(core: CoreMessage[]): UIMessage[] {
-  return core.map((m) => ({
-    id: crypto.randomUUID(),
-    role: m.role,
-    createdAt: new Date(),
-    parts:
-      typeof m.content === "string"
-        ? [{ type: "text", text: m.content }]
-        : m.content, // already an array of parts
-  }));
-}
+// export function convertToUIMessages(core: CoreMessage[]): UIMessage[] {
+//   return core.map((m) => ({
+//     id: crypto.randomUUID(),
+//     role: m.role,
+//     createdAt: new Date(),
+//     parts:
+//       typeof m.content === "string"
+//         ? [{ type: "text", text: m.content }]
+//         : m.content, // already an array of parts
+//   }));
+// }
