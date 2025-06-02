@@ -63,7 +63,7 @@ type ActionButtonProps = {
   label: string;
 };
 
-function ActionButton({ icon, label }: ActionButtonProps) {
+const ActionButton = memo(function ActionButton({ icon, label }: ActionButtonProps) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -77,9 +77,9 @@ function ActionButton({ icon, label }: ActionButtonProps) {
       </TooltipContent>
     </Tooltip>
   );
-}
+});
 
-function MessageActions() {
+const MessageActions = memo(function MessageActions() {
   return (
     <div className="relative inline-flex bg-white rounded-md border border-black/[0.08] shadow-sm -space-x-px">
       <TooltipProvider delayDuration={0}>
@@ -90,4 +90,4 @@ function MessageActions() {
       </TooltipProvider>
     </div>
   );
-}
+});
