@@ -61,7 +61,3 @@ export async function generateMessage({ messages }: { messages: Message[] }) {
   }
   return generator();
 }
-
-export function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}

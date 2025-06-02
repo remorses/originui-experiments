@@ -23,11 +23,12 @@ import {
 } from "@remixicon/react";
 import { ScrollToEndOnLoad } from "./scroll-to-end";
 import { Message, useChat } from "ai/react";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { UIMessage } from "ai";
-import { useChatState } from "./state";
+import {  chatStateContainer, useChatState } from "./state";
+import { generateMessage } from "./actions";
 
-export default function Chat({  }) {
+export default function Chat({}) {
   const messages = useChatState((x) => x?.messages);
   return (
     <ScrollArea className="grow [&>div>div]:h-full flex-1 h-full flex flex-col w-full shadow-md md:rounded-s-[inherit] min-[1024px]:rounded-e-3xl bg-background">
@@ -112,6 +113,35 @@ export default function Chat({  }) {
 }
 
 function Footer() {
+  const [text, setText] = useState("");
+  const [isPending, startTransition] = useTransition();
+  const messages = useChatState((x) => x?.messages || []);
+
+  const handleSubmit = () => {
+    startTransition(async () => {
+      console.log("Submitting:", text);
+
+      // Create user message
+      const userMessage: UIMessage = {
+        id: Date.now().toString(),
+        content: "",
+        role: "user" as const,
+        parts: [{ type: "text", text }],
+      };
+
+      // Call generateMessage with current messages plus user message
+      const allMessages = [...messages, userMessage];
+       chatStateContainer?.current?.setState({ messages: allMessages });
+      const generator = await generateMessage({ messages: allMessages });
+      for await (let part of generator) {
+        console.log(part);
+      }
+
+      // Clear the input
+      setText("");
+    });
+  };
+
   return (
     <div className="sticky bottom-0 pt-4 md:pt-8 z-50">
       <div className="max-w-3xl mx-auto bg-background rounded-[20px] pb-4 md:pb-8">
@@ -120,6 +150,16 @@ function Footer() {
             className="flex sm:min-h-[84px] w-full bg-transparent px-4 py-3 text-[15px] leading-relaxed text-foreground placeholder:text-muted-foreground/70 focus-visible:outline-none [resize:none]"
             placeholder="Ask me anything..."
             aria-label="Enter your prompt"
+            value={text}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                e.preventDefault();
+                if (!isPending && text.trim()) {
+                  handleSubmit();
+                }
+              }
+            }}
+            onChange={(e) => setText(e.target.value)}
           />
           {/* Textarea buttons */}
           <div className="flex items-center justify-between gap-2 p-3">
@@ -205,7 +245,13 @@ function Footer() {
                 </svg>
                 <span className="sr-only">Generate</span>
               </Button>
-              <Button className="rounded-full h-8">Ask Bart</Button>
+              <Button
+                className="rounded-full h-8"
+                onClick={handleSubmit}
+                disabled={isPending || !text.trim()}
+              >
+                {isPending ? "Loading..." : "Ask Bart"}
+              </Button>
             </div>
           </div>
         </div>

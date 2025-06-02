@@ -1,0 +1,96 @@
+[
+  {
+    "id": "1748875752974",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "hello\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "id": "msg-5yJ1shGlybqS02idM82DWRr2",
+    "createdAt": "2025-06-02T14:49:14.100Z",
+    "content": "",
+    "toolInvocations": [
+      {
+        "state": "result",
+        "step": 0,
+        "args": {
+          "hello": "Hello! How can I assist you today?"
+        },
+        "toolCallId": "call_8vmmPNOC6Pm4PFmn9H6htRjN",
+        "toolName": "some",
+        "result": "Tool executed"
+      }
+    ],
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "args": {
+            "hello": "Hello! How can I assist you today?"
+          },
+          "toolCallId": "call_8vmmPNOC6Pm4PFmn9H6htRjN",
+          "toolName": "some",
+          "result": "Tool executed"
+        }
+      }
+    ]
+  },
+  {
+    "id": "1748876230987",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "hi"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "id": "msg-m5APWWgzkK5cKAG1TJsvOVxd",
+    "createdAt": "2025-06-02T14:57:12.234Z",
+    "content": "",
+    "toolInvocations": [
+      {
+        "state": "result",
+        "step": 0,
+        "args": {
+          "hello": "Hi there! What can I do for you today?"
+        },
+        "toolCallId": "call_wbGJhGc1TVZY3OY6ny9L4KAZ",
+        "toolName": "some",
+        "result": "Tool executed"
+      }
+    ],
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "args": {
+            "hello": "Hi there! What can I do for you today?"
+          },
+          "toolCallId": "call_wbGJhGc1TVZY3OY6ny9L4KAZ",
+          "toolName": "some",
+          "result": "Tool executed"
+        }
+      }
+    ]
+  }
+]
