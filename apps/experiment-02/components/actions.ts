@@ -33,6 +33,29 @@ export async function generateMessage({ messages }: { messages: Message[] }) {
     const result = streamText({
       model: openai("gpt-4o-mini"),
       messages,
+      maxSteps: 100,
+      tools: {
+        getWeather: tool({
+          description: "Get current weather information for a location",
+          parameters: z.object({
+            location: z
+              .string()
+              .describe("The city and state/country to get weather for"),
+          }),
+          execute: async ({ location }) => {
+            // Mock weather data - in a real app you'd call a weather API
+            const weatherData = {
+              location,
+              temperature: Math.floor(Math.random() * 30) + 10,
+              condition: ["sunny", "cloudy", "rainy", "snowy"][
+                Math.floor(Math.random() * 4)
+              ],
+              humidity: Math.floor(Math.random() * 50) + 30,
+            };
+            return `Weather in ${location}: ${weatherData.temperature}°C, ${weatherData.condition}, ${weatherData.humidity}% humidity`;
+          },
+        }),
+      },
       async onFinish({ response }) {
         await saveChat(
           appendResponseMessages({
@@ -56,10 +79,10 @@ export async function generateMessage({ messages }: { messages: Message[] }) {
 
     for await (const part of result.fullStream) {
       if ("request" in part) {
-        delete (part as any)["request"];
+        part.request = null as any;
       }
       if ("response" in part) {
-        delete (part as any)["response"];
+        part.response = null as any;
       }
       console.log(part);
       yield part;

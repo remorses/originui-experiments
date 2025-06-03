@@ -24,7 +24,7 @@ export const ChatMessage = memo(function ChatMessage({
   message,
   children,
 }: ChatMessageProps) {
-  console.log(`rendering message ${message.id}`)
+  console.log(`rendering message ${message.id}`);
   return (
     <article
       className={cn(
@@ -44,11 +44,21 @@ export const ChatMessage = memo(function ChatMessage({
             {message.role === "user" ? "You" : "Bart"} said:
           </p>
           {message.parts.map((part, index) => {
+            if (part.type === "tool-invocation") {
+              return (
+                <pre key={index}>{JSON.stringify(part.toolInvocation, null, 2)}</pre>
+              );
+            }
+
             if (part.type === "text") {
               if (message.role === "user") {
                 return part.text;
               }
               return <Markdown key={index}>{part.text}</Markdown>;
+            }
+
+            if (part.type === "reasoning") {
+              return <Markdown key={index}>{part.reasoning}</Markdown>;
             }
           })}
         </div>
@@ -63,7 +73,10 @@ type ActionButtonProps = {
   label: string;
 };
 
-const ActionButton = memo(function ActionButton({ icon, label }: ActionButtonProps) {
+const ActionButton = memo(function ActionButton({
+  icon,
+  label,
+}: ActionButtonProps) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>

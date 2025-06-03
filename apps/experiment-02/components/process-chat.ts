@@ -1,13 +1,4 @@
-import {
-  CoreMessage,
-  FinishReason,
-  JSONValue,
-  LanguageModelUsage,
-  TextStreamPart,
-  ToolInvocation,
-  ToolSet,
-  UIMessage,
-} from "ai";
+import { TextStreamPart, ToolInvocation, ToolSet, UIMessage } from "ai";
 
 import { parsePartialJson } from "@ai-sdk/ui-utils";
 import { UseChatOptions } from "ai/react";
@@ -17,30 +8,6 @@ type UiMessagePart = UIMessage["parts"][number];
 type TextUIPart = Extract<UiMessagePart, { type: "text" }>;
 type ReasoningUIPart = Extract<UiMessagePart, { type: "reasoning" }>;
 type ToolInvocationUIPart = Extract<UiMessagePart, { type: "tool-invocation" }>;
-
-async function* throttleGenerator<T>(
-  generator: AsyncIterable<T>,
-  delayMs: number = 16,
-): AsyncIterable<T[]> {
-  let buffer: T[] = [];
-  let lastYield = 0;
-
-  for await (const item of generator) {
-    buffer.push(item);
-
-    const now = Date.now();
-    if (now - lastYield >= delayMs) {
-      yield [...buffer];
-      buffer = [];
-      lastYield = now;
-    }
-  }
-
-  // Flush any remaining items
-  if (buffer.length > 0) {
-    yield buffer;
-  }
-}
 
 export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
   fullStream,
@@ -57,13 +24,21 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
 }) {
   const lastMessage = messages[messages.length - 1];
   const replaceLastMessage = lastMessage?.role === "assistant";
-  let step = replaceLastMessage
-    ? 1 +
-      // find max step in existing tool invocations:
-      (lastMessage.toolInvocations?.reduce((max, toolInvocation) => {
-        return Math.max(max, toolInvocation.step ?? 0);
-      }, 0) ?? 0)
-    : 0;
+
+  // Calculate step from existing tool invocation parts in the message
+  let step = 0;
+  if (replaceLastMessage) {
+    const toolInvocationParts = lastMessage.parts?.filter(
+      (part) => part.type === "tool-invocation",
+    ) as ToolInvocationUIPart[] | undefined;
+
+    if (toolInvocationParts?.length) {
+      const maxStep = toolInvocationParts.reduce((max, part) => {
+        return Math.max(max, part.toolInvocation.step ?? 0);
+      }, 0);
+      step = maxStep + 1;
+    }
+  }
 
   const message: UIMessage = replaceLastMessage
     ? structuredClone(lastMessage)
@@ -75,7 +50,7 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
         parts: [],
       };
 
-  let currentMessages = [...messages];
+  const currentMessages = [...messages];
   if (!replaceLastMessage) {
     currentMessages.push(message);
   } else {
@@ -99,7 +74,7 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
     ) as ToolInvocationUIPart | undefined;
 
     if (part != null) {
-      part.toolInvocation = invocation;
+      part.toolInvocation = { ...part.toolInvocation, ...invocation };
     } else {
       message.parts.push({
         type: "tool-invocation",
@@ -108,41 +83,11 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
     }
   }
 
-  const data: JSONValue[] = [];
-
-  // keep list of current message annotations for message
-  let messageAnnotations: JSONValue[] | undefined = replaceLastMessage
-    ? lastMessage?.annotations
-    : undefined;
-
-  // keep track of partial tool calls
   const partialToolCalls: Record<
     string,
     { text: string; step: number; index: number; toolName: string }
   > = {};
 
-  let usage: LanguageModelUsage = {
-    completionTokens: NaN,
-    promptTokens: NaN,
-    totalTokens: NaN,
-  };
-
-  function execUpdate() {
-    // keeps the currentMessage up to date with the latest annotations,
-    // even if annotations preceded the message creation
-    if (messageAnnotations?.length) {
-      message.annotations = messageAnnotations;
-    }
-
-    // Update the current messages array
-    currentMessages[currentMessages.length - 1] = { ...message };
-
-    return [...currentMessages];
-  }
-  // implementation note: this slightly more complex algorithm is required
-  // to pass the tests in the edge environment.
-
-  let finishReason: FinishReason;
   for await (const values of throttleGenerator(fullStream, 60)) {
     for (const value of values) {
       const type = value.type;
@@ -159,7 +104,7 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
           }
 
           message.content += value.textDelta;
-          yield execUpdate();
+          yield currentMessages.slice(0, -1).concat({ ...message });
           break;
         }
         case "reasoning": {
@@ -186,9 +131,7 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
             currentReasoningPart.reasoning += value;
           }
 
-          message.reasoning = (message.reasoning ?? "") + value.textDelta;
-
-          yield execUpdate();
+          yield currentMessages.slice(0, -1).concat({ ...message });
           break;
         }
         case "reasoning-signature": {
@@ -214,7 +157,7 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
 
           currentReasoningTextDetail = undefined;
 
-          yield execUpdate();
+          yield currentMessages.slice(0, -1).concat({ ...message });
           break;
         }
         case "file": {
@@ -224,7 +167,7 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
             data: value.base64,
           });
 
-          yield execUpdate();
+          yield currentMessages.slice(0, -1).concat({ ...message });
           break;
         }
         case "source": {
@@ -233,55 +176,35 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
             source: value.source,
           });
 
-          yield execUpdate();
+          yield currentMessages.slice(0, -1).concat({ ...message });
           break;
         }
-        // case "data": {
-        //   data.push(...value);
-        //   execUpdate();
-        //   break;
-        // }
+
         case "error": {
-          const err = value?.error as any;
-          throw new Error(err?.message || err);
-          break;
+          const err = value?.error as Error | { message?: string };
+          throw new Error(err?.message || String(err));
         }
-        // case "message_annotations": {
-        //   if (messageAnnotations == null) {
-        //     messageAnnotations = [...value];
-        //   } else {
-        //     messageAnnotations.push(...value);
-        //   }
 
-        //   execUpdate();
-        //   break;
-        // }
         case "tool-call-streaming-start": {
-          if (message.toolInvocations == null) {
-            message.toolInvocations = [];
-          }
-
           // add the partial tool call to the map
           partialToolCalls[value.toolCallId] = {
             text: "",
             step,
             toolName: value.toolName,
-            index: message.toolInvocations.length,
+            index: message.parts.filter(
+              (part) => part.type === "tool-invocation",
+            ).length,
           };
 
-          const invocation = {
+          updateToolInvocationPart(value.toolCallId, {
             state: "partial-call",
             step,
             toolCallId: value.toolCallId,
             toolName: value.toolName,
             args: undefined,
-          } as const;
+          });
 
-          message.toolInvocations.push(invocation);
-
-          updateToolInvocationPart(value.toolCallId, invocation);
-
-          yield execUpdate();
+          yield currentMessages.slice(0, -1).concat({ ...message });
           break;
         }
         case "tool-call-delta": {
@@ -294,44 +217,26 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
 
           const { value: partialArgs } = parsePartialJson(partialToolCall.text);
 
-          const invocationDelta = {
+          updateToolInvocationPart(value.toolCallId, {
             state: "partial-call",
             step: partialToolCall.step,
             toolCallId: value.toolCallId,
             toolName: partialToolCall.toolName,
+
             args: partialArgs,
-          } as const;
+          });
 
-          message.toolInvocations![partialToolCall.index] = invocationDelta;
-
-          updateToolInvocationPart(value.toolCallId, invocationDelta);
-
-          yield execUpdate();
+          yield currentMessages.slice(0, -1).concat({ ...message });
           break;
         }
         case "tool-call": {
-          const invocationCall: ToolInvocation = {
+          updateToolInvocationPart(value.toolCallId, {
             state: "call",
             step,
             ...value,
-          } as const;
+          });
 
-          if (partialToolCalls[value.toolCallId] != null) {
-            // change the partial tool call to a full tool call
-            message.toolInvocations![
-              partialToolCalls[value.toolCallId]?.index!
-            ] = invocationCall;
-          } else {
-            if (message.toolInvocations == null) {
-              message.toolInvocations = [];
-            }
-
-            message.toolInvocations.push(invocationCall);
-          }
-
-          updateToolInvocationPart(value.toolCallId, invocationCall);
-
-          yield execUpdate();
+          yield currentMessages.slice(0, -1).concat({ ...message });
 
           // invoke the onToolCall callback if it exists. This is blocking.
           // In the future we should make this non-blocking, which
@@ -339,61 +244,28 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
           if (onToolCall) {
             const result = await onToolCall({ toolCall: value });
             if (result != null) {
-              const invocationResult: ToolInvocation = {
+              updateToolInvocationPart(value.toolCallId, {
                 state: "result",
                 step,
                 ...value,
                 result,
-              } as const;
+              });
 
-              // store the result in the tool invocation
-              message.toolInvocations![message.toolInvocations!.length - 1] =
-                invocationResult;
-
-              updateToolInvocationPart(value.toolCallId, invocationResult);
-
-              yield execUpdate();
+              yield currentMessages.slice(0, -1).concat({ ...message });
             }
           }
           break;
         }
         case "tool-result": {
-          const toolInvocations = message.toolInvocations;
-
-          if (toolInvocations == null) {
-            throw new Error("tool_result must be preceded by a tool_call");
-          }
-
-          // find if there is any tool invocation with the same toolCallId
-          // and replace it with the result
-          const toolInvocationIndex = toolInvocations.findIndex(
-            (invocation) => invocation.toolCallId === value.toolCallId,
-          );
-
-          if (toolInvocationIndex === -1) {
-            throw new Error(
-              "tool_result must be preceded by a tool_call with the same toolCallId",
-            );
-          }
-
-          const invocationWithResult: ToolInvocation = {
-            ...toolInvocations[toolInvocationIndex],
+          updateToolInvocationPart(value.toolCallId, {
             state: "result" as const,
             ...value,
-          } as const;
+          });
 
-          toolInvocations[toolInvocationIndex] = invocationWithResult;
-
-          updateToolInvocationPart(value.toolCallId, invocationWithResult);
-
-          yield execUpdate();
+          yield currentMessages.slice(0, -1).concat({ ...message });
           break;
         }
         case "finish": {
-          finishReason = value.finishReason;
-          if (value.usage != null) {
-            usage = value.usage;
-          }
           break;
         }
         case "step-finish": {
@@ -413,7 +285,7 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
 
           // add a step boundary part to the message
           message.parts.push({ type: "step-start" });
-          yield execUpdate();
+          yield currentMessages.slice(0, -1).concat({ ...message });
           break;
         }
         default: {
@@ -436,3 +308,27 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
 //         : m.content, // already an array of parts
 //   }));
 // }
+
+async function* throttleGenerator<T>(
+  generator: AsyncIterable<T>,
+  delayMs: number = 16,
+): AsyncIterable<T[]> {
+  let buffer: T[] = [];
+  let lastYield = 0;
+
+  for await (const item of generator) {
+    buffer.push(item);
+
+    const now = Date.now();
+    if (now - lastYield >= delayMs) {
+      yield [...buffer];
+      buffer = [];
+      lastYield = now;
+    }
+  }
+
+  // Flush any remaining items
+  if (buffer.length > 0) {
+    yield buffer;
+  }
+}

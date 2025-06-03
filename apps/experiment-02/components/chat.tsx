@@ -122,13 +122,13 @@ function Footer() {
 
   const handleSubmit = () => {
     startTransition(async () => {
-      console.log("Submitting:", text);
+      const generateId = createIdGenerator();
 
       // Create user message
       const userMessage: UIMessage = {
-        id: Date.now().toString(),
+        id: generateId(),
         content: "",
-        role: "user" as const,
+        role: "user",
         parts: [{ type: "text", text }],
       };
 
@@ -136,25 +136,22 @@ function Footer() {
       const allMessages = [...messages, userMessage];
       chatStateContainer?.current?.setState({ messages: allMessages });
       const generator = await generateMessage({ messages: allMessages });
-      const generateId = createIdGenerator();
       for await (const newMessages of fullStreamToUIMessages({
         fullStream: generator,
         messages: allMessages,
         generateId,
       })) {
-        console.log(newMessages);
+        // Clear the input
+        setText("");
         chatStateContainer?.current?.setState({ messages: newMessages });
       }
-
-      // Clear the input
-      setText("");
     });
   };
 
   return (
     <div className="sticky bottom-0 pt-4 md:pt-8 z-50">
       <div className="max-w-3xl mx-auto bg-background rounded-[20px] pb-4 md:pb-8">
-        <div className="relative rounded-[20px] border border-transparent bg-muted transition-colors focus-within:bg-muted/50 focus-within:border-input has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 [&:has(input:is(:disabled))_*]:pointer-events-none">
+        <div className="relative rounded-[20px] border border-transparent bg-muted transition-colors focus-within:bg-muted/50 focus-within:border-input has-[:disabled]:cursor-not-allowed  [&:has(input:is(:disabled))_*]:pointer-events-none">
           <textarea
             className="flex sm:min-h-[84px] w-full bg-transparent px-4 py-3 text-[15px] leading-relaxed text-foreground placeholder:text-muted-foreground/70 focus-visible:outline-none [resize:none]"
             placeholder="Ask me anything..."

@@ -1,22 +1,29 @@
 "use client";
 import { UIMessage } from "ai";
-import { ExtractState, StoreApi, useStore } from "zustand";
+import { createContext, useContext } from "react";
+import { ExtractState, StoreApi, create, createStore, useStore } from "zustand";
+import { UseBoundStore } from "zustand/react";
 
-export const chatStateContainer: { current: StoreApi<State> | null } = {
+export const chatStateContainer: {
+  current: UseBoundStore<StoreApi<State>> | null;
+} = {
   current: null,
 };
 
 export function useChatState<U>(
   selector: (state: ExtractState<StoreApi<State>>) => U,
 ) {
-  if (!chatStateContainer.current) {
-    throw new Error(
-      `chatState.current is undefined, call it under the state provider`,
-    );
+  const useStore = useContext(zustandContext);
+  if (!useStore) {
+    throw new Error("useChatState must be used within a ChatProvider");
   }
-  return useStore<StoreApi<State>, U>(chatStateContainer.current, selector);
+  return useStore(selector);
 }
 
 export type State = {
   messages: UIMessage[];
 };
+
+export const zustandContext = createContext<
+  UseBoundStore<StoreApi<State>> | undefined
+>(undefined);

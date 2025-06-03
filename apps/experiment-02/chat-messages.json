@@ -614,11 +614,10 @@
     ]
   },
   {
-    "role": "assistant",
     "id": "msg-wpCerqhZHj2OKRyzZlRXMhj9",
-    "createdAt": "2025-06-02T16:20:25.829Z",
+    "createdAt": "2025-06-02T16:20:24.217Z",
+    "role": "assistant",
     "content": "Sure! Here’s a short poem for you:\n\n**Silent Night**\n\nStars above in velvet skies,  \nWhispers soft, the night complies.  \nDreams take flight on gentle wings,  \nIn the stillness, the heart sings.  \n\nI hope you like this one! If you’d like more, just let me know!",
-    "toolInvocations": [],
     "parts": [
       {
         "type": "step-start"
@@ -626,6 +625,435 @@
       {
         "type": "text",
         "text": "Sure! Here’s a short poem for you:\n\n**Silent Night**\n\nStars above in velvet skies,  \nWhispers soft, the night complies.  \nDreams take flight on gentle wings,  \nIn the stillness, the heart sings.  \n\nI hope you like this one! If you’d like more, just let me know!"
+      }
+    ]
+  },
+  {
+    "id": "PKibQer6A1wPiwR9",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "more\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "id": "msg-RSGLeBsvww638QExRbvkwAn3",
+    "createdAt": "2025-06-02T18:33:47.951Z",
+    "content": "Of course! Here are a few more short poems for you:\n\n---\n\n**Morning Light**\n\nGolden rays through window panes,  \nAwakening the world again.  \nWith each dawn, a fresh new start,  \nHope ignites within the heart.\n\n---\n\n**Fleeting Moments**\n\nTime slips by like grains of sand,  \nEach moment cherished, close at hand.  \nIn laughter shared and tears we find,  \nLife’s beauty woven, heart entwined.\n\n---\n\n**Nature's Call**\n\nWhispers of the forest deep,  \nWhere ancient secrets softly sleep.  \nIn every rustle, every breeze,  \nNature's voice brings hearts to ease.\n\n---\n\n**Dreamer's Sky**\n\nUnderneath the starlit dome,  \nWishes soar, and dreams find home.  \nIn the quiet, hopes take flight,  \nGuided gently by the night.\n\n---\n\nI hope you enjoy these! If you’d like more or have a specific theme in mind, just let me know!",
+    "toolInvocations": [],
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "text",
+        "text": "Of course! Here are a few more short poems for you:\n\n---\n\n**Morning Light**\n\nGolden rays through window panes,  \nAwakening the world again.  \nWith each dawn, a fresh new start,  \nHope ignites within the heart.\n\n---\n\n**Fleeting Moments**\n\nTime slips by like grains of sand,  \nEach moment cherished, close at hand.  \nIn laughter shared and tears we find,  \nLife’s beauty woven, heart entwined.\n\n---\n\n**Nature's Call**\n\nWhispers of the forest deep,  \nWhere ancient secrets softly sleep.  \nIn every rustle, every breeze,  \nNature's voice brings hearts to ease.\n\n---\n\n**Dreamer's Sky**\n\nUnderneath the starlit dome,  \nWishes soar, and dreams find home.  \nIn the quiet, hopes take flight,  \nGuided gently by the night.\n\n---\n\nI hope you enjoy these! If you’d like more or have a specific theme in mind, just let me know!"
+      }
+    ]
+  },
+  {
+    "id": "koIpaCWWlwUPD1Kg",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "what is the weather in genoa\n"
+      }
+    ]
+  },
+  {
+    "id": "msg-40UBi2HFH6xq8BirGIR1Y6EM",
+    "createdAt": "2025-06-03T15:27:57.961Z",
+    "role": "assistant",
+    "content": "",
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "type": "tool-result",
+          "toolCallId": "call_5Ds5dDHwC7OSNETPxTwZahZN",
+          "toolName": "getWeather",
+          "args": {
+            "location": "Genoa, Italy"
+          },
+          "result": "Weather in Genoa, Italy: 11°C, snowy, 69% humidity"
+        }
+      }
+    ]
+  },
+  {
+    "id": "pmVWf4i20K5GTV1d",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "check again and talk to me too\n"
+      }
+    ]
+  },
+  {
+    "id": "msg-KVFBLRZ3R8W7gqEOFwiL1NSG",
+    "createdAt": "2025-06-03T15:28:58.379Z",
+    "role": "assistant",
+    "content": "",
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "type": "tool-result",
+          "toolCallId": "call_Z3ZM1jZzjuCNHfsdmicxo3pp",
+          "toolName": "getWeather",
+          "args": {
+            "location": "Genoa, Italy"
+          },
+          "result": "Weather in Genoa, Italy: 22°C, snowy, 55% humidity"
+        }
+      }
+    ]
+  },
+  {
+    "id": "N6Odf2mOwB6GURgP",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "say somehting\n"
+      }
+    ]
+  },
+  {
+    "id": "msg-6Ek43BvR5YH3hahHQN8sXoMW",
+    "createdAt": "2025-06-03T15:29:03.636Z",
+    "role": "assistant",
+    "content": "The weather in Genoa, Italy, is currently 22°C with snow and 55% humidity. It seems like a unique day with snow at that temperature! How are you feeling about the weather? Is there anything specific you'd like to know or discuss?",
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "text",
+        "text": "The weather in Genoa, Italy, is currently 22°C with snow and 55% humidity. It seems like a unique day with snow at that temperature! How are you feeling about the weather? Is there anything specific you'd like to know or discuss?"
+      }
+    ]
+  },
+  {
+    "id": "85JEBJ38GoTAP4q4",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "chck again\n"
+      }
+    ]
+  },
+  {
+    "id": "msg-mBd5y5nAmJ2buzwMYRvaByX1",
+    "createdAt": "2025-06-03T15:29:29.543Z",
+    "role": "assistant",
+    "content": "The current weather in Genoa, Italy, is 20°C and sunny, with 46% humidity. It sounds like a lovely day! How do you feel about sunny weather? Is there anything else you'd like to know?",
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "type": "tool-result",
+          "toolCallId": "call_zxkivHZSwMdmPOjECjNhIXbM",
+          "toolName": "getWeather",
+          "args": {
+            "location": "Genoa, Italy"
+          },
+          "result": "Weather in Genoa, Italy: 20°C, sunny, 46% humidity"
+        }
+      },
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "text",
+        "text": "The current weather in Genoa, Italy, is 20°C and sunny, with 46% humidity. It sounds like a lovely day! How do you feel about sunny weather? Is there anything else you'd like to know?"
+      }
+    ]
+  },
+  {
+    "id": "VIN0pRW3X46361KD",
+    "content": "",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "check in other 10 random cities"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "id": "msg-Ds5amaVorVTcKieEmTZBo2Og",
+    "createdAt": "2025-06-03T15:29:59.880Z",
+    "content": "Here’s the current weather in 10 random cities:\n\n1. **New York, USA**: 17°C, snowy, 60% humidity\n2. **Tokyo, Japan**: 23°C, cloudy, 30% humidity\n3. **Sydney, Australia**: 26°C, cloudy, 67% humidity\n4. **Cairo, Egypt**: 35°C, snowy, 75% humidity\n5. **London, UK**: 11°C, sunny, 65% humidity\n6. **Rio de Janeiro, Brazil**: 22°C, rainy, 39% humidity\n7. **Moscow, Russia**: 15°C, rainy, 35% humidity\n8. **Mumbai, India**: 31°C, snowy, 35% humidity\n9. **Toronto, Canada**: 38°C, sunny, 39% humidity\n10. **Cape Town, South Africa**: 22°C, sunny, 41% humidity\n\nIf you have any questions about the weather or anything else, feel free to ask!",
+    "toolInvocations": [
+      {
+        "state": "result",
+        "step": 0,
+        "args": {
+          "location": "New York, USA"
+        },
+        "toolCallId": "call_8BuSH8lkUuwhjLyADIii63Hb",
+        "toolName": "getWeather",
+        "result": "Weather in New York, USA: 17°C, snowy, 60% humidity"
+      },
+      {
+        "state": "result",
+        "step": 0,
+        "args": {
+          "location": "Tokyo, Japan"
+        },
+        "toolCallId": "call_pqyKUMCKq2tKVuYzdi6KTBA4",
+        "toolName": "getWeather",
+        "result": "Weather in Tokyo, Japan: 23°C, cloudy, 30% humidity"
+      },
+      {
+        "state": "result",
+        "step": 0,
+        "args": {
+          "location": "Sydney, Australia"
+        },
+        "toolCallId": "call_p9nGVLAcOGGxEihhWybILEmH",
+        "toolName": "getWeather",
+        "result": "Weather in Sydney, Australia: 26°C, cloudy, 67% humidity"
+      },
+      {
+        "state": "result",
+        "step": 0,
+        "args": {
+          "location": "Cairo, Egypt"
+        },
+        "toolCallId": "call_Ee79NwqWnyiMKxcGgDDEnMzZ",
+        "toolName": "getWeather",
+        "result": "Weather in Cairo, Egypt: 35°C, snowy, 75% humidity"
+      },
+      {
+        "state": "result",
+        "step": 0,
+        "args": {
+          "location": "London, UK"
+        },
+        "toolCallId": "call_lmp3uiRAo5IgMEeCBJHcfxKJ",
+        "toolName": "getWeather",
+        "result": "Weather in London, UK: 11°C, sunny, 65% humidity"
+      },
+      {
+        "state": "result",
+        "step": 0,
+        "args": {
+          "location": "Rio de Janeiro, Brazil"
+        },
+        "toolCallId": "call_ZSlvanyaFAYJ1rHiYP4tKvy0",
+        "toolName": "getWeather",
+        "result": "Weather in Rio de Janeiro, Brazil: 22°C, rainy, 39% humidity"
+      },
+      {
+        "state": "result",
+        "step": 0,
+        "args": {
+          "location": "Moscow, Russia"
+        },
+        "toolCallId": "call_K3Rl8hZpomr6M6QuIQclNB07",
+        "toolName": "getWeather",
+        "result": "Weather in Moscow, Russia: 15°C, rainy, 35% humidity"
+      },
+      {
+        "state": "result",
+        "step": 0,
+        "args": {
+          "location": "Mumbai, India"
+        },
+        "toolCallId": "call_4nKCVZtajLE4njaEvVvCTjb5",
+        "toolName": "getWeather",
+        "result": "Weather in Mumbai, India: 31°C, snowy, 35% humidity"
+      },
+      {
+        "state": "result",
+        "step": 0,
+        "args": {
+          "location": "Toronto, Canada"
+        },
+        "toolCallId": "call_fURhFcI4fetezHO6JNVM8JQy",
+        "toolName": "getWeather",
+        "result": "Weather in Toronto, Canada: 38°C, sunny, 39% humidity"
+      },
+      {
+        "state": "result",
+        "step": 0,
+        "args": {
+          "location": "Cape Town, South Africa"
+        },
+        "toolCallId": "call_BhWphdmOKChktRZBy4V13BIA",
+        "toolName": "getWeather",
+        "result": "Weather in Cape Town, South Africa: 22°C, sunny, 41% humidity"
+      }
+    ],
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "args": {
+            "location": "New York, USA"
+          },
+          "toolCallId": "call_8BuSH8lkUuwhjLyADIii63Hb",
+          "toolName": "getWeather",
+          "result": "Weather in New York, USA: 17°C, snowy, 60% humidity"
+        }
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "args": {
+            "location": "Tokyo, Japan"
+          },
+          "toolCallId": "call_pqyKUMCKq2tKVuYzdi6KTBA4",
+          "toolName": "getWeather",
+          "result": "Weather in Tokyo, Japan: 23°C, cloudy, 30% humidity"
+        }
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "args": {
+            "location": "Sydney, Australia"
+          },
+          "toolCallId": "call_p9nGVLAcOGGxEihhWybILEmH",
+          "toolName": "getWeather",
+          "result": "Weather in Sydney, Australia: 26°C, cloudy, 67% humidity"
+        }
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "args": {
+            "location": "Cairo, Egypt"
+          },
+          "toolCallId": "call_Ee79NwqWnyiMKxcGgDDEnMzZ",
+          "toolName": "getWeather",
+          "result": "Weather in Cairo, Egypt: 35°C, snowy, 75% humidity"
+        }
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "args": {
+            "location": "London, UK"
+          },
+          "toolCallId": "call_lmp3uiRAo5IgMEeCBJHcfxKJ",
+          "toolName": "getWeather",
+          "result": "Weather in London, UK: 11°C, sunny, 65% humidity"
+        }
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "args": {
+            "location": "Rio de Janeiro, Brazil"
+          },
+          "toolCallId": "call_ZSlvanyaFAYJ1rHiYP4tKvy0",
+          "toolName": "getWeather",
+          "result": "Weather in Rio de Janeiro, Brazil: 22°C, rainy, 39% humidity"
+        }
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "args": {
+            "location": "Moscow, Russia"
+          },
+          "toolCallId": "call_K3Rl8hZpomr6M6QuIQclNB07",
+          "toolName": "getWeather",
+          "result": "Weather in Moscow, Russia: 15°C, rainy, 35% humidity"
+        }
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "args": {
+            "location": "Mumbai, India"
+          },
+          "toolCallId": "call_4nKCVZtajLE4njaEvVvCTjb5",
+          "toolName": "getWeather",
+          "result": "Weather in Mumbai, India: 31°C, snowy, 35% humidity"
+        }
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "args": {
+            "location": "Toronto, Canada"
+          },
+          "toolCallId": "call_fURhFcI4fetezHO6JNVM8JQy",
+          "toolName": "getWeather",
+          "result": "Weather in Toronto, Canada: 38°C, sunny, 39% humidity"
+        }
+      },
+      {
+        "type": "tool-invocation",
+        "toolInvocation": {
+          "state": "result",
+          "step": 0,
+          "args": {
+            "location": "Cape Town, South Africa"
+          },
+          "toolCallId": "call_BhWphdmOKChktRZBy4V13BIA",
+          "toolName": "getWeather",
+          "result": "Weather in Cape Town, South Africa: 22°C, sunny, 41% humidity"
+        }
+      },
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "text",
+        "text": "Here’s the current weather in 10 random cities:\n\n1. **New York, USA**: 17°C, snowy, 60% humidity\n2. **Tokyo, Japan**: 23°C, cloudy, 30% humidity\n3. **Sydney, Australia**: 26°C, cloudy, 67% humidity\n4. **Cairo, Egypt**: 35°C, snowy, 75% humidity\n5. **London, UK**: 11°C, sunny, 65% humidity\n6. **Rio de Janeiro, Brazil**: 22°C, rainy, 39% humidity\n7. **Moscow, Russia**: 15°C, rainy, 35% humidity\n8. **Mumbai, India**: 31°C, snowy, 35% humidity\n9. **Toronto, Canada**: 38°C, sunny, 39% humidity\n10. **Cape Town, South Africa**: 22°C, sunny, 41% humidity\n\nIf you have any questions about the weather or anything else, feel free to ask!"
       }
     ]
   }

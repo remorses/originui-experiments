@@ -1,8 +1,8 @@
 "use client";
-import { createStore } from "zustand";
-import { chatStateContainer, State, useChatState } from "./state";
-import { createContext } from "react";
-const zustandContext = createContext(useChatState);
+import { createContext, useState } from "react";
+import { create } from "zustand";
+import { chatStateContainer, State, useChatState, zustandContext } from "./state";
+
 
 export function StateProvider({
   value,
@@ -11,7 +11,12 @@ export function StateProvider({
   value: State;
   children: React.ReactNode;
 }) {
-  if (!chatStateContainer.current) chatStateContainer.current = createStore<State>(() => value);
+  const [useChatState] = useState(() => {
+    const store = create<State>(() => value);
+    chatStateContainer.current = store;
+    return store;
+  });
+
   return (
     <zustandContext.Provider value={useChatState}>
       {children}
