@@ -117,7 +117,7 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
               currentReasoningPart.details.push(currentReasoningTextDetail);
             }
           } else {
-            currentReasoningTextDetail.text += value;
+            currentReasoningTextDetail.text += value?.textDelta;
           }
 
           if (currentReasoningPart == null) {
@@ -128,7 +128,7 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
             };
             message.parts.push(currentReasoningPart);
           } else {
-            currentReasoningPart.reasoning += value;
+            currentReasoningPart.reasoning += value?.textDelta;
           }
 
           yield currentMessages.slice(0, -1).concat({ ...message });
@@ -296,18 +296,6 @@ export async function* fullStreamToUIMessages<TOOLS extends ToolSet>({
     }
   }
 }
-
-// export function convertToUIMessages(core: CoreMessage[]): UIMessage[] {
-//   return core.map((m) => ({
-//     id: crypto.randomUUID(),
-//     role: m.role,
-//     createdAt: new Date(),
-//     parts:
-//       typeof m.content === "string"
-//         ? [{ type: "text", text: m.content }]
-//         : m.content, // already an array of parts
-//   }));
-// }
 
 async function* throttleGenerator<T>(
   generator: AsyncIterable<T>,

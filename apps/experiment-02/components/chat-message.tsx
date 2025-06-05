@@ -46,7 +46,9 @@ export const ChatMessage = memo(function ChatMessage({
           {message.parts.map((part, index) => {
             if (part.type === "tool-invocation") {
               return (
-                <pre key={index}>{JSON.stringify(part.toolInvocation, null, 2)}</pre>
+                <pre key={index}>
+                  {JSON.stringify(part.toolInvocation, null, 2)}
+                </pre>
               );
             }
 
@@ -58,7 +60,11 @@ export const ChatMessage = memo(function ChatMessage({
             }
 
             if (part.type === "reasoning") {
-              return <Markdown key={index}>{part.reasoning}</Markdown>;
+              return (
+                <Markdown className="opacity-70" key={index}>
+                  {"thinking:" + part.reasoning}
+                </Markdown>
+              );
             }
           })}
         </div>

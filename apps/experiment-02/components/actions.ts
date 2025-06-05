@@ -1,9 +1,10 @@
 "use server";
 import fs from "fs";
-import { openai } from "@ai-sdk/openai";
+import { openai, OpenAIResponsesProviderOptions } from "@ai-sdk/openai";
 import {
   appendResponseMessages,
   Message,
+  UIMessage,
   streamText,
   tool,
   type CoreMessage,
@@ -31,9 +32,14 @@ export async function generateMessage({ messages }: { messages: Message[] }) {
   }
   async function* generator() {
     const result = streamText({
-      model: openai("gpt-4o-mini"),
+      model: openai.responses("o4-mini"),
       messages,
       maxSteps: 100,
+      experimental_providerMetadata: {
+        openai: {
+          reasoningSummary: "detailed",
+        } satisfies OpenAIResponsesProviderOptions,
+      },
       tools: {
         getWeather: tool({
           description: "Get current weather information for a location",
